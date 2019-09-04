@@ -1,0 +1,19 @@
+{
+  "name": "dapp-auction",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "cucumber-js",
+    "compile": "node compile.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cucumber": "^5.1.0",
+    "ganache-cli": "^6.6.0",
+    "solc": "^0.5.11",
+    "web3": "^1.2.1"
+  }
+}
