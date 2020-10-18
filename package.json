@@ -12,8 +12,8 @@
   "license": "ISC",
   "devDependencies": {
     "cucumber": "^5.1.0",
-    "ganache-cli": "^6.6.0",
-    "solc": "^0.5.11",
-    "web3": "^1.2.1"
+    "ganache-cli": "^6.12.0",
+    "solc": "^0.5.17",
+    "web3": "^1.3.0"
   }
 }

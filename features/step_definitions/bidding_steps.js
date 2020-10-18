@@ -164,9 +164,14 @@ function pause(seconds) {
 }
 
 async function estimateGas(deploy) {
-    let gas = await deploy.estimateGas()
-    gas = parseInt(gas)
-    gas += parseInt(gas*2.5)
+    let gas
+    try {
+        gas = await deploy.estimateGas()
+        gas = parseInt(gas)
+        gas += parseInt(gas*2.5)
+    } catch {
+        gas = 1000000
+    }
 
     return gas
 }

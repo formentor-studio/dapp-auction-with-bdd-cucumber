@@ -15,15 +15,14 @@ let state = {
 // When Open auction for "Porsche 550 RS Spyder 1954"
 When('Open auction for {string}', async function (name) {
     const accounts = await web3.eth.getAccounts()
-
-    const deploy = new web3.eth.Contract(JSON.parse(abi))
-    .deploy({
-        data: bytecode,
-        arguments: [name, 1, 0, 0]
-    })
-    const gas = await estimateGas(deploy)
-    
     try {
+        const deploy = new web3.eth.Contract(JSON.parse(abi))
+        .deploy({
+            data: bytecode,
+            arguments: [name, 1, 0, 0]
+        })
+        const gas = await estimateGas(deploy)
+    
         state.auction = await deploy.send({
             from: accounts[0],
             gas
@@ -59,14 +58,15 @@ Then('Smart contract for Auction rejected due to {string}', function (error) {
 When('Open auction and reserve price is {int}', async function (reserve) {
     const accounts = await web3.eth.getAccounts()
 
-    const deploy = new web3.eth.Contract(JSON.parse(abi))
-    .deploy({
-        data: bytecode,
-        arguments: ["Awesome super car", reserve, 0, 0]
-    })
-    const gas = await estimateGas(deploy)
-    
     try {
+
+        const deploy = new web3.eth.Contract(JSON.parse(abi))
+        .deploy({
+            data: bytecode,
+            arguments: ["Awesome super car", reserve, 0, 0]
+        })
+        const gas = await estimateGas(deploy)
+    
         state.auction = await deploy.send({
             from: accounts[0],
             gas
