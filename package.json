@@ -4,16 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cucumber-js",
+    "test": "cucumber-js --publish-quiet",
     "compile": "node compile.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "cucumber": "^5.1.0",
-    "ganache-cli": "^6.12.0",
-    "solc": "^0.5.17",
-    "web3": "^1.3.0"
+    "@cucumber/cucumber": "^7.2.1",
+    "ganache-cli": "^6.12.2",
+    "solc": "0.5.8",
+    "web3": "^1.3.5"
   }
 }
