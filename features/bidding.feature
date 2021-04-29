@@ -32,4 +32,4 @@ Feature: Auction bidding
     And 6 minutes have passed since the last bid
     When A buyer make a bid
     Then Bid is rejected due to "Auction is ended"
-   
+

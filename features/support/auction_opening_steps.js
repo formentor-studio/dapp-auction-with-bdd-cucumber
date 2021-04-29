@@ -1,5 +1,5 @@
-const assert = require('assert');
-const { Given, When, Then } = require('cucumber');
+const assert = require('assert').strict;
+const { Given, When, Then } = require('@cucumber/cucumber');
 const { abi, bytecode } = require('../../build/Auction')
 const ganache = require('ganache-cli'); // Mockup of eth network
 const web3 = new (require('web3'))(ganache.provider());
@@ -22,7 +22,7 @@ When('Open auction for {string}', async function (name) {
             arguments: [name, 1, 0, 0]
         })
         const gas = await estimateGas(deploy)
-    
+
         state.auction = await deploy.send({
             from: accounts[0],
             gas
@@ -31,7 +31,7 @@ When('Open auction for {string}', async function (name) {
         state.error = e.message
     }
 });
-    
+
 // Then Smart contract for Auction of "Porsche 550 RS Spyder 1954" must be created
 Then('Smart contract for Auction of {string} must be created', async function (name) {
     assert.ok(state.auction)
@@ -39,7 +39,7 @@ Then('Smart contract for Auction of {string} must be created', async function (n
     const actual_name = await state.auction.methods.name().call()
     assert.equal(actual_name, name)
 });
-    
+
 /**
  * Scenario: Auction of items with not suitable description must be rejected
  */
@@ -66,7 +66,7 @@ When('Open auction and reserve price is {int}', async function (reserve) {
             arguments: ["Awesome super car", reserve, 0, 0]
         })
         const gas = await estimateGas(deploy)
-    
+
         state.auction = await deploy.send({
             from: accounts[0],
             gas
@@ -80,7 +80,7 @@ When('Open auction and reserve price is {int}', async function (reserve) {
 Then('Smart contract created with reserve price of {int}', async function (reserve) {
     assert.ok(state.auction)
     assert.ok(state.auction.options.address)
-    const actual_reserve = await state.auction.methods.reservePrice().call()
+    const actual_reserve = parseInt(await state.auction.methods.reservePrice().call())
     assert.equal(actual_reserve, reserve)
 });
 
