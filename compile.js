@@ -27,7 +27,7 @@ compile = (contracts) => {
             }
         }
     }
-    const output = JSON.parse(solc.compile(JSON.stringify(input), findImports));
+    const output = JSON.parse(solc.compile(JSON.stringify(input), { import: findImports }));
     if (output.errors) {
         console.error(output.errors);
     }
