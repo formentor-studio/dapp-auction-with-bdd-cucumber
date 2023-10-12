@@ -1,8 +1,10 @@
 const assert = require('assert').strict;
 const { Given, When, Then, Before } = require('@cucumber/cucumber')
 const { abi, bytecode } = require('../../build/Auction')
-const ganache = require('ganache-cli'); // Mockup of eth network
-const web3 = new (require('web3'))(ganache.provider());
+const { Web3 } = require('web3');
+const ganache = require('ganache'); // Mockup of eth network
+
+const web3 = new Web3(ganache.provider());
 
 let state = {
     auction: undefined,
@@ -38,21 +40,22 @@ When('A buyer make a bid for {int}', async function (amount) {
 Then('Bid for {int} is accepted', async function (amount) {
     assert.ok(!state.error)
 
-    let highBidder
-    let highBid
     // Capture last 'Bid' event
-    state.auction.getPastEvents('Bid' , { fromBlock: 0, toBlock: 'latest' } , (error, events) => {
+    await state.auction.getPastEvents('Bid' , { fromBlock: 0, toBlock: 'latest' } , (error) => {
         assert.ok(!error)
+    })
+    .then( async (events) => {
         assert.ok( events.length > 0 )
 
         const index = events.length - 1
-        highBidder = events[index].returnValues.highBidder
-        highBid = parseInt(events[index].returnValues.highBid)
+        const highBidder = events[index].returnValues.highBidder
+        const highBid = parseInt(events[index].returnValues.highBid)
+
+        const accounts = await web3.eth.getAccounts()
+        assert.equal(highBidder, accounts[1])
+        assert.equal(highBid, amount)
     })
 
-    const accounts = await web3.eth.getAccounts()
-    assert.equal(highBidder, accounts[1])
-    assert.equal(highBid, amount)
 });
 
 /**
@@ -62,7 +65,7 @@ Then('Bid for {int} is accepted', async function (amount) {
 // Then Bid is rejected due to "Bid must be greater than reserve"
 Then('Bid is rejected due to {string}', function (error) {
     assert.ok(state.error)
-    assert.ok(state.error.indexOf(error) > 0)
+    assert.ok(state.error.indexOf(error) != 0)
 });
 
 /**

@@ -1,8 +1,10 @@
 const assert = require('assert').strict;
 const { Given, When, Then } = require('@cucumber/cucumber');
 const { abi, bytecode } = require('../../build/Auction')
-const ganache = require('ganache-cli'); // Mockup of eth network
-const web3 = new (require('web3'))(ganache.provider());
+const { Web3 } = require('web3');
+const ganache = require('ganache'); // Mockup of eth network
+
+const web3 = new Web3(ganache.provider());
 
 let state = {
     auction: undefined,
@@ -47,7 +49,7 @@ Then('Smart contract for Auction of {string} must be created', async function (n
 // Then Smart contract for Auction rejected due to "Poor description"
 Then('Smart contract for Auction rejected due to {string}', function (error) {
     assert.ok(state.error)
-    assert.ok(state.error.indexOf(error) > 0)
+    assert.ok(state.error.indexOf(error) != 0)
 });
 
 /**

@@ -1,4 +1,5 @@
-pragma solidity ^0.5.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.21;
 
 contract Auction {
     address seller;
@@ -18,7 +19,7 @@ contract Auction {
         string memory _name,
         uint256 _reservePrice,
         uint256 _minIncrement,
-        uint256 _timeoutPeriod) public {
+        uint256 _timeoutPeriod) {
             require(bytes(_name).length > 10, "Poor description");
             require(_reservePrice > 0, "Reserve must be greater than 0");
             name = _name;
@@ -26,11 +27,11 @@ contract Auction {
             minIncrement = _minIncrement;
             timeoutPeriod = _timeoutPeriod;
             seller = msg.sender;
-            auctionEnd = now + timeoutPeriod;
+            auctionEnd = block.timestamp + timeoutPeriod;
     }
 
     function bid(uint256 amount) public payable {
-        require(now < auctionEnd, "Auction is ended");
+        require(block.timestamp < auctionEnd, "Auction is ended");
         require(amount >= reservePrice, "Bid amount must be greater than reserve");
         require(amount >= balanceOf[highBidder] + minIncrement, "Bid amount does not reach highest bid");
 
@@ -39,7 +40,7 @@ contract Auction {
 
         highBidder = msg.sender;
 
-        auctionEnd = now + timeoutPeriod;
+        auctionEnd = block.timestamp + timeoutPeriod;
 
         emit Bid(highBidder, amount);
     }
